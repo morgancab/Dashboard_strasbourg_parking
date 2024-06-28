@@ -5,3 +5,4 @@ numpy==1.21.2
 requests==2.26.0
 json5==0.9.6
 pytz==2021.3
+gunicorn==19.7.1
