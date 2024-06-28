@@ -64,13 +64,13 @@ etat_data["share_size"] = round((etat_data['size'] / etat_data['size'].sum()) ,2
 
 status_bar = px.bar(etat_data, y='etat_descriptif',
             x='size' ,
-            width=600,
             height=140,
-            orientation='h' ,
+            orientation='h' , 
             color = 'size' ,
             color_continuous_scale=px.colors.sequential.OrRd[::-1])
 status_bar.update_layout(yaxis={'categoryorder':'total ascending'},
-                  margin=dict(l=20, r=20, t=20, b=20),) 
+                  margin=dict(l=20, r=20, t=20, b=20),
+                  yaxis_title='  ') 
 status_bar.update_layout(coloraxis_showscale=False)
 
 
