@@ -11,11 +11,17 @@ import requests
 import json 
 import plotly.io as pio
 from plotly.subplots import make_subplots
+from datetime import datetime 
+import pytz 
 
 
 
 app = Dash(__name__)
 
+#Get timestamp
+UTC = pytz.utc
+time_At_P = pytz.timezone('Europe/Paris') 
+dt_time_P = datetime.now(time_At_P) 
 
 ############################# Pulling the data
 #Parking info
@@ -52,7 +58,24 @@ NBR_place_libre = sum(RT_parking_ouvert["libre"])
 NBR_place_occupee = sum(RT_parking_ouvert["Occupee"])
 nbr_place_total  = sum(RT_parking_ouvert["total"])
 
-## Bar plot - place de parking occupe
+###### Bar plot - Status des parkings
+etat_data = RT_parking.groupby(['etat_descriptif'], as_index=False).size()
+etat_data["share_size"] = round((etat_data['size'] / etat_data['size'].sum()) ,2)
+
+status_bar = px.bar(etat_data, y='etat_descriptif',
+            x='size' ,
+            width=600,
+            height=140,
+            orientation='h' ,
+            color = 'size' ,
+            color_continuous_scale=px.colors.sequential.OrRd[::-1])
+status_bar.update_layout(yaxis={'categoryorder':'total ascending'},
+                  margin=dict(l=20, r=20, t=20, b=20),) 
+status_bar.update_layout(coloraxis_showscale=False)
+
+
+
+###### Bar plot - place de parking occupe
 pio.templates.default = "plotly"
 Sorting_order = RT_parking_ouvert.sort_values('percentage_occupe', ascending=False)['nom_parking'].to_list()
 
@@ -67,7 +90,7 @@ fig1.update_layout(barmode='overlay',
 
 
 
-## Map - place de parking occupe
+###### Map - place de parking occupe
 fig2 = px.scatter_mapbox(RT_parking_ouvert, 
                         lat=RT_parking_ouvert['position.lat'],
                         lon=RT_parking_ouvert['position.lon'], 
@@ -120,7 +143,7 @@ app.layout =  html.Div([
         ], className="one-half column", id="title"),
 
         html.Div([
-            html.H6('Last Updated: ' +  '  00:01 (UTC)',
+            html.H6('refresh à ' + dt_time_P.strftime("%Y-%m-%d %H:%M:%S"),
                     style={'color': 'orange'}),
 
         ], className="one-third column", id='title1'),
@@ -177,18 +200,16 @@ app.layout =  html.Div([
         ),
 
         html.Div([
-            html.H6(children='Parking fermés',
+            html.H6(children='Status des parkings',
                     style={
                         'textAlign': 'left',
                         'color': 'white'}
-                    ),
-
-            html.P(f"{round(AVG_occupe * 100,2) }"  + '%',
-                   style={
-                       'textAlign': 'center',
-                       'color': 'grey',
-                       'fontSize': 40}
-                   )], className="card_container columns",
+                    ), 
+                    dcc.Graph(
+                            id='status_plot',
+                            figure=status_bar
+                    )
+                    ], className="card_container columns",
         )
 
     ], className="row flex-display"),
