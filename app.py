@@ -17,6 +17,7 @@ import pytz
 
 
 app = Dash(__name__)
+server = app.server
 
 #Get timestamp
 UTC = pytz.utc
