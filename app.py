@@ -137,7 +137,7 @@ app.layout =  html.Div([
         ),
         html.Div([
             html.Div([
-                html.H3("Strabourg parking", style={"margin-bottom": "0px", 'color': 'white'}),
+                html.H3("Strasbourg parking", style={"margin-bottom": "0px", 'color': 'white'}),
                 html.H5("Tracker état du stationnement", style={"margin-top": "0px", 'color': 'white'}),
             ])
         ], className="one-half column", id="title"),
