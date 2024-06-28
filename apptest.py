@@ -31,39 +31,45 @@ RT_parking = pd.json_normalize(Loads_RT_parking['results'])
 
 #Compute data
 RT_parking["Occupee"] = RT_parking["total"]  - RT_parking["libre"] 
-RT_parking["percentage_occupe"] = RT_parking["Occupee"]  / RT_parking["total"]  
+RT_parking["percentage_occupe"] = round(RT_parking["Occupee"]  / RT_parking["total"] *100,2) 
 
 #add the location (lat/lon)
 parking_info = parking_info[["name" , "position.lon",	"position.lat"]]
 RT_parking = RT_parking.merge(parking_info, how='inner' , left_on='nom_parking' , right_on = 'name')
 
+#Filter parking open/close/data non disponible
+RT_parking_ouvert = RT_parking.loc[RT_parking['etat_descriptif'] == "Ouvert"]
+RT_parking_ferme = RT_parking.loc[RT_parking['etat_descriptif'] == "Fermé"]
+RT_parking_not_available = RT_parking.loc[RT_parking['etat_descriptif'] == "frequentation temps reel indisponible"]
 
 
-#AVG fullness
-AVG_occupe = round(sum(RT_parking["Occupee"]) / sum(RT_parking["total"]) ,4)
+## AVG fullness
+AVG_occupe = round(sum(RT_parking_ouvert["Occupee"]) / sum(RT_parking_ouvert["total"]) ,4)
 
-#Availability data
-NBR_place_libre = sum(RT_parking["libre"])
-NBR_place_occupee = sum(RT_parking["Occupee"])
-nbr_place_total  = sum(RT_parking["total"])
+## Availability data
+NBR_place_libre = sum(RT_parking_ouvert["libre"])
+NBR_place_occupee = sum(RT_parking_ouvert["Occupee"])
+nbr_place_total  = sum(RT_parking_ouvert["total"])
 
 ## Bar plot - place de parking occupe
 pio.templates.default = "plotly"
+Sorting_order = RT_parking_ouvert.sort_values('percentage_occupe', ascending=False)['nom_parking'].to_list()
 
 fig1 = make_subplots(shared_yaxes=True, shared_xaxes=True)
-fig1.add_bar(x=RT_parking['nom_parking'],y=RT_parking['total'],opacity=0.6,width=0.95,name='total',hovertemplate='%{y}')
-fig1.add_bar(x=RT_parking['nom_parking'],y=RT_parking['Occupee'],width=0.95,name='Occupee')
+fig1.add_bar(x=RT_parking_ouvert['nom_parking'],y=RT_parking_ouvert['total'],opacity=0.6,width=0.95,name='total',hovertemplate='%{y}')
+fig1.add_bar(x=RT_parking_ouvert['nom_parking'],y=RT_parking_ouvert['Occupee'],width=0.95,name='Occupee')
 fig1.update_layout(barmode='overlay', 
                   title= "Occupation parking Strasbourg",
-                  xaxis_title=' ', 
-                  yaxis_title='Occupation')
+                  yaxis_title='Occupation',
+                    xaxis={'categoryorder':'array', 'categoryarray':Sorting_order})
 
-fig1.update_layout(xaxis={'categoryorder':'total descending'})
+
+
 
 ## Map - place de parking occupe
-fig2 = px.scatter_mapbox(RT_parking, 
-                        lat=RT_parking['position.lat'],
-                        lon=RT_parking['position.lon'], 
+fig2 = px.scatter_mapbox(RT_parking_ouvert, 
+                        lat=RT_parking_ouvert['position.lat'],
+                        lon=RT_parking_ouvert['position.lon'], 
                         hover_name="nom_parking", 
                         size="etat" ,
                         #hover_data=["status" , "Bike available" , "Available space" ],
@@ -79,10 +85,10 @@ fig2.update_layout(coloraxis_showscale=False)
 fig2.update_traces(
     hovertemplate = 
                 "<b>%{customdata[0]}</b><br>"   +  
-                "<b>Etat : </b> %{customdata[1]}<br>" + 
+                "<b>État : </b> %{customdata[1]}<br>" + 
                 "<b>Parking libre: </b> %{customdata[2]}<br>" +
                 "<b>Parking occupe: </b> %{customdata[3]}<br>"  +
-                "<b>Pourcentage occupation: </b> %{customdata[4]}<br>"  
+                "<b>Pourcentage occupation: </b> %{customdata[4]}%<br>"  
                 ) 
 #fig2.show()
 
@@ -101,7 +107,7 @@ app.layout =  html.Div([
         html.Div([
             html.Div([
                 html.H3("Strabourg parking", style={"margin-bottom": "0px", 'color': 'white'}),
-                html.H5("Track Covid - 19 Cases", style={"margin-top": "0px", 'color': 'white'}),
+                html.H5("Tracker état du stationnement", style={"margin-top": "0px", 'color': 'white'}),
             ])
         ], className="one-half column", id="title"),
 
@@ -163,9 +169,9 @@ app.layout =  html.Div([
         ),
 
         html.Div([
-            html.H6(children='Moyenne occupation',
+            html.H6(children='Parking fermés',
                     style={
-                        'textAlign': 'center',
+                        'textAlign': 'left',
                         'color': 'white'}
                     ),
 
@@ -181,7 +187,7 @@ app.layout =  html.Div([
 
 
     html.Div([
-            html.H6(children='Occupation des places par parking',
+            html.H6(children='Occupation des places de parking',
                     style={
                         'textAlign': 'center',
                         'color': 'white'}
@@ -194,7 +200,7 @@ app.layout =  html.Div([
     ),
 
     html.Div([
-            html.H6(children='Occupation des places par parking',
+            html.H6(children='Maps montrant les parkings avec un fort taux de remplissage',
                     style={
                         'textAlign': 'center',
                         'color': 'white'}
@@ -203,14 +209,10 @@ app.layout =  html.Div([
                 dcc.Graph(id='map-plot',
                             figure=fig2
                     ) ], className="card_container columns",
-    ) ,
+    ) 
 
 
-    html.Div(children='''
-        Reporting pour visualiser la gestion des parkings
-    '''),
-    dcc.Graph(id='example-graph2',
-              figure=fig2)
+    
 ])
 
 
