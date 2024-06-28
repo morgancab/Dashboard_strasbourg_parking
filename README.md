@@ -68,7 +68,3 @@ python app.py
 ### 🙏 Acknowledgments
 
 This project was inspired by the [Covid-19 Dashboard in Python by Plotly Dash](https://github.com/Mubeen31/Covid-19-Dashboard-in-Python-by-Plotly-Dash).
-
-## 📜 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
