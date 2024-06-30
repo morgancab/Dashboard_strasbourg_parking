@@ -1,10 +1,12 @@
 # 🚗 Strasbourg Parking Dashboard 🅿️
 
-![Dashboard Page View](assets/Page_view.jpg)
-
 Welcome to the Strasbourg Parking Dashboard! This project is a web application that provides real-time information on the parking status in Strasbourg. The dashboard is built using Python and Plotly Dash and visualizes parking availability, occupancy rates, and the status of various parking facilities in the city.
 
 You can access the live site here: [Strasbourg Parking Dashboard](https://dashboard-strasbourg-parking.onrender.com/)
+
+![Dashboard Page View](assets/Page_view.jpg)
+
+
 
 
 ## 🌟 Features
