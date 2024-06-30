@@ -13,7 +13,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 from datetime import datetime 
 import pytz 
-
+ 
 
 
 app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
