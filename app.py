@@ -16,8 +16,8 @@ import pytz
 
 
 
-app = Dash(__name__)
-server = app.server
+
+
 
 #Get timestamp
 UTC = pytz.utc
@@ -120,7 +120,7 @@ fig2.update_traces(
 
 
 app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
-
+server = app.server
 
 app.layout =  html.Div([
     html.Div([
