@@ -1,6 +1,11 @@
 # 🚗 Strasbourg Parking Dashboard 🅿️
 
+![Dashboard Page View](assets/Page_view.jpg)
+
 Welcome to the Strasbourg Parking Dashboard! This project is a web application that provides real-time information on the parking status in Strasbourg. The dashboard is built using Python and Plotly Dash and visualizes parking availability, occupancy rates, and the status of various parking facilities in the city.
+
+You can access the live site here: [Strasbourg Parking Dashboard](https://dashboard-strasbourg-parking.onrender.com/)
+
 
 ## 🌟 Features
 
@@ -38,13 +43,19 @@ git clone https://github.com/yourusername/strasbourg-parking-dashboard.git
 cd strasbourg-parking-dashboard
 ```
 
-2. Run the application:
-
+2. Install dependencies
 ```sh
-python app.py
+git clone https://github.com/yourusername/strasbourg-parking-dashboard.git
+cd strasbourg-parking-dashboard
 ```
 
-3. Open your web browser and visit [http://127.0.0.1:8050/](http://127.0.0.1:8050/).
+3. Run the application:
+
+```sh
+pip install -r requirements.txt
+```
+
+4. Open your web browser and visit [http://127.0.0.1:8050/](http://127.0.0.1:8050/).
 
 ### 📁 Project Structure
 
@@ -55,7 +66,8 @@ python app.py
 ├── assets
 │   ├── s1.css               # CSS file for styling
 │   ├── style.css            # CSS file for styling
-│   └── strasbourg_logo.jpg  # Logo for the dashboard
+│   ├── strasbourg_logo.jpg  # Logo for the dashboard
+│   └── Page_view.jpg        # Dashboard Page View Image
 ├── README.md                # This file
 └── requirements.txt         # List of Python dependencies
 ```
