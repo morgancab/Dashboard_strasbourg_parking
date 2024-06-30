@@ -16,7 +16,8 @@ import pytz
 
 
 
-
+app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
+server = app.server
 
 
 #Get timestamp
@@ -119,8 +120,7 @@ fig2.update_traces(
 
 
 
-app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
-server = app.server
+
 
 app.layout =  html.Div([
     html.Div([
