@@ -81,14 +81,18 @@ status_bar.update_layout(coloraxis_showscale=False)
 pio.templates.default = "plotly"
 Sorting_order = RT_parking_ouvert.sort_values('percentage_occupe', ascending=False)['nom_parking'].to_list()
 
-fig1 = make_subplots(shared_yaxes=True, shared_xaxes=True)
-fig1.add_bar(x=RT_parking_ouvert['nom_parking'],y=RT_parking_ouvert['total'],opacity=0.6,width=0.95,name='total',hovertemplate='%{y}')
-fig1.add_bar(x=RT_parking_ouvert['nom_parking'],y=RT_parking_ouvert['Occupee'],width=0.95,name='Occupee')
+fig1 = make_subplots(shared_yaxes=True, shared_xaxes=True , )
+fig1.add_bar(x=RT_parking_ouvert['nom_parking'],y=RT_parking_ouvert['total'],opacity=0.6,width=0.95,name='total',hovertemplate='%{y}',marker_color='grey')
+fig1.add_bar(x=RT_parking_ouvert['nom_parking'],y=RT_parking_ouvert['Occupee'],width=0.95,name='Occupee',marker_color=RT_parking_ouvert['realtimestatus'] ,)
 fig1.update_layout(barmode='overlay', 
                   title= "Occupation parking Strasbourg",
                   yaxis_title='Occupation',
-                    xaxis={'categoryorder':'array', 'categoryarray':Sorting_order})
+                    xaxis={'categoryorder':'array', 'categoryarray':Sorting_order},)
 
+fig1.update_traces(
+    hovertemplate = "<b> " + RT_parking_ouvert['nom_parking'] + " </b><br>"   +  
+                   "<b>État : </b> " + RT_parking_ouvert['etat_descriptif'] + " </b><br>"   + 
+                  "<b>Places : %{y} </b> " )
 
 
 
@@ -100,8 +104,8 @@ fig2 = px.scatter_mapbox(RT_parking_ouvert,
                         size="etat" ,
                         #hover_data=["status" , "Bike available" , "Available space" ],
                         custom_data=['nom_parking', 'etat_descriptif', 'libre' , 'Occupee','percentage_occupe'] ,
-                        color="percentage_occupe",
-                        color_continuous_scale=px.colors.sequential.OrRd ,
+                        #color="percentage_occupe",
+                        color_discrete_sequence=[RT_parking_ouvert.realtimestatus],
                         opacity = 0.8,
                         zoom=11, 
                         height=450)
