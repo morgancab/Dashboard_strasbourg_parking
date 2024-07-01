@@ -67,13 +67,15 @@ etat_data["share_size"] = round((etat_data['size'] / etat_data['size'].sum()) ,2
 status_bar = px.bar(etat_data, y='etat_descriptif',
             x='size' ,
             height=140,
-            orientation='h' , 
-            color = 'size' ,
-            color_continuous_scale=px.colors.sequential.OrRd[::-1])
+            orientation='h' ,
+            color = 'etat_descriptif',
+            color_discrete_map={"Fermé": 'black' , "Ouvert": 'Green' , "frequentation temps reel indisponible": 'Blue'})
+
 status_bar.update_layout(yaxis={'categoryorder':'total ascending'},
-                  margin=dict(l=20, r=20, t=20, b=20),
-                  yaxis_title='  ') 
-status_bar.update_layout(coloraxis_showscale=False)
+                        xaxis={'visible': False},
+                        margin=dict(l=20, r=20, t=20, b=20)
+                        ) 
+status_bar.update_layout(coloraxis_showscale=False , showlegend=False)
 
 
 
@@ -184,7 +186,7 @@ app.layout =  html.Div([
             html.P(NBR_place_occupee,
                    style={
                        'textAlign': 'center',
-                       'color': '#dd1e35',
+                       'color': 'red',
                        'fontSize': 40}
                    )], className="card_container two columns",
         ),
@@ -199,7 +201,7 @@ app.layout =  html.Div([
             html.P(f"{round(AVG_occupe * 100,2) }"  + '%',
                    style={
                        'textAlign': 'center',
-                       'color': 'gold',
+                       'color': 'yellow',
                        'fontSize': 40}
                    )], className="card_container two columns",
         ),
