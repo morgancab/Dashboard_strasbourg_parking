@@ -144,14 +144,14 @@ app.layout =  html.Div([
         ),
         html.Div([
             html.Div([
-                html.H3("Strasbourg parking", style={"margin-bottom": "0px", 'color': 'white'}),
+                html.H2("Strasbourg parking", style={"margin-bottom": "0px", 'color': 'white'}),
                 html.H5("Tracker état du stationnement", style={"margin-top": "0px", 'color': 'white'}),
             ])
         ], className="one-half column", id="title"),
 
         html.Div([
             html.H6('refresh à ' + dt_time_P.strftime("%Y-%m-%d %H:%M:%S"),
-                    style={'color': 'orange'}),
+                    style={'color': 'orange'})
 
         ], className="one-third column", id='title1'),
 
