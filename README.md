@@ -38,7 +38,7 @@ pip install dash plotly pandas numpy requests pytz
 
 ### 🚀 Running the Application
 
-1. Clone the repository:
+1. Clone the repository
 
 ```sh
 git clone https://github.com/yourusername/strasbourg-parking-dashboard.git
@@ -46,15 +46,15 @@ cd strasbourg-parking-dashboard
 ```
 
 2. Install dependencies
-```sh
-git clone https://github.com/yourusername/strasbourg-parking-dashboard.git
-cd strasbourg-parking-dashboard
-```
-
-3. Run the application:
 
 ```sh
 pip install -r requirements.txt
+```
+
+3. Run the application
+
+```sh
+python app.py
 ```
 
 4. Open your web browser and visit [http://127.0.0.1:8050/](http://127.0.0.1:8050/).
