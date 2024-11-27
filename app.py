@@ -100,8 +100,8 @@ fig1.update_traces(
 
 ###### Map - place de parking occupe
 fig2 = px.scatter_mapbox(RT_parking_ouvert, 
-                        lat=RT_parking_ouvert['position.lat'],
-                        lon=RT_parking_ouvert['position.lon'], 
+                        lat=RT_parking_ouvert['position.lat_x'],
+                        lon=RT_parking_ouvert['position.lon_x'], 
                         hover_name="nom_parking", 
                         size="etat" ,
                         #hover_data=["status" , "Bike available" , "Available space" ],
